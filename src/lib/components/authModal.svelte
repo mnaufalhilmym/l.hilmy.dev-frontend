@@ -28,7 +28,7 @@
 		const res = await apiMoveShortUrlsToNewUserId({ oldUserId, newUserId });
 		setIsLoading(false);
 		if (!res?.ok) {
-			alert(res?.payload);
+			console.log(res?.payload);
 			return;
 		}
 		dispatch('getShortUrls');

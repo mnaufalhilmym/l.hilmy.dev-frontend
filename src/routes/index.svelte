@@ -32,7 +32,7 @@
 		const res = await apiGetShortUrls($userStore.userId);
 		isLoading = false;
 		if (!res?.ok) {
-			alert(res?.payload);
+			console.log(res?.payload);
 			return;
 		}
 		if (res?.payload) {
@@ -67,7 +67,7 @@
 		const res = await apiCreateShortUrl({ userId, longUrl, shortUrl });
 		isLoading = false;
 		if (!res?.ok) {
-			alert(res?.payload);
+			console.log(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -86,7 +86,7 @@
 		const res = await apiModifyShortUrl(shortUrl, { userId: $userStore.userId, isShow: false });
 		isLoading = false;
 		if (!res?.ok) {
-			alert(res?.payload);
+			console.log(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -97,7 +97,7 @@
 		const res = await apiDeleteShortUrl(shortUrl, { userId: $userStore.userId });
 		isLoading = false;
 		if (!res?.ok) {
-			alert(res?.payload);
+			console.log(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -154,27 +154,29 @@
 									>Shorten URL</button
 								>
 							</div>
-							<div class="mx-3 flex flex-wrap">
-								{#if isCustomShortUrl}
-									<div class="flex-1 flex">
-										<span>{globalConf.APP_ADDR_ALT}/</span>
-										<input
-											type="text"
-											name="shortUrl"
-											placeholder="enter short URL"
-											required
-											minlength="3"
-											autocomplete="off"
-											class="min-w-0 flex-1 bg-transparent outline-none"
-										/>
-									</div>
-								{/if}
-								<button
-									type="button"
-									on:click={toggleCustomShortUrlHandler}
-									class="block mx-auto hover:underline"
-									>{isCustomShortUrl ? 'Get random short URL' : 'Use custom short URL'}</button
-								>
+							<div class="px-3 w-full">
+								<div class="w-full flex flex-col sm:flex-row flex-wrap gap-x-2 gap-y-1">
+									{#if isCustomShortUrl}
+										<div class="min-w-0 flex-1 flex">
+											<span>{globalConf.APP_ADDR_ALT}/</span>
+											<input
+												type="text"
+												name="shortUrl"
+												placeholder="enter short URL"
+												required
+												minlength="3"
+												autocomplete="off"
+												class="w-full bg-transparent outline-none"
+											/>
+										</div>
+									{/if}
+									<button
+										type="button"
+										on:click={toggleCustomShortUrlHandler}
+										class="block mx-auto hover:underline"
+										>{isCustomShortUrl ? 'Get random short URL' : 'Use custom short URL'}</button
+									>
+								</div>
 							</div>
 						</form>
 					</div>
