@@ -20,7 +20,6 @@ export default function randomString(
 
 	for (let i = 0; i < len; i++) {
 		const randIndex = Math.floor(Math.random() * chars.length);
-		console.log(randIndex);
 		randString += chars[randIndex];
 	}
 

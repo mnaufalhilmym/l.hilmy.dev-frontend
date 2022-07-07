@@ -29,7 +29,6 @@
 		setIsLoading(false);
 		if (!res?.ok) {
 			console.log(res?.payload);
-			return;
 		}
 		dispatch('getShortUrls');
 	}
