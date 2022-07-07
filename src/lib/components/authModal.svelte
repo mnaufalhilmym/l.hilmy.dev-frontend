@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import { userStore } from '$lib/stores/user';
 	import apiMoveShortUrlsToNewUserId from '$lib/apis/moveShortUrlsToNewUserId';
-	export let getShortUrls: () => void;
 
 	const dispatch = createEventDispatcher();
 
@@ -23,10 +22,10 @@
 
 		const res = await apiMoveShortUrlsToNewUserId({ oldUserId, newUserId });
 		if (!res?.ok) {
-			// TODO handle error
+			alert(res?.payload);
 			return;
 		}
-		getShortUrls();
+		dispatch('getShortUrls');
 	}
 </script>
 
@@ -51,6 +50,10 @@
 			autocomplete="off"
 			class="mt-1 py-1 px-2 w-full block bg-transparent border rounded-lg outline-none"
 		/>
-		<button type="submit" class="mt-6 mx-auto py-2 px-5 block border hover:border-sky-400 rounded-lg hover:text-sky-400">Confirm</button>
+		<button
+			type="submit"
+			class="mt-6 mx-auto py-2 px-5 block border hover:border-sky-400 rounded-lg hover:text-sky-400"
+			>Confirm</button
+		>
 	</form>
 </div>

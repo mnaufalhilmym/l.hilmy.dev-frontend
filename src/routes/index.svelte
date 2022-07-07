@@ -28,7 +28,7 @@
 		const res = await apiGetShortUrls($userStore.userId);
 		isLoadingShortUrlsData = false;
 		if (!res?.ok) {
-			// TODO if failes
+			alert(res?.payload);
 			return;
 		}
 		if (res?.payload) {
@@ -61,7 +61,7 @@
 
 		const res = await apiCreateShortUrl({ userId, longUrl, shortUrl });
 		if (!res?.ok) {
-			// TODO if failed
+			alert(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -78,7 +78,7 @@
 	async function forgetShortUrlHandler(shortUrl: string) {
 		const res = await apiModifyShortUrl(shortUrl, { userId: $userStore.userId, isShow: false });
 		if (!res?.ok) {
-			// TODO handle error
+			alert(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -87,7 +87,7 @@
 	async function deleteShortUrlHandler(shortUrl: string) {
 		const res = await apiDeleteShortUrl(shortUrl, { userId: $userStore.userId });
 		if (!res?.ok) {
-			// TODO handle error
+			alert(res?.payload);
 			return;
 		}
 		getShortUrls();
@@ -243,7 +243,7 @@
 			</footer>
 		</div>
 		{#if isAuthModalOpen}
-			<AuthModal on:close={closeAuthModal} {getShortUrls} />
+			<AuthModal on:close={closeAuthModal} on:getShortUrls={getShortUrls} />
 		{/if}
 	</div>
 {/if}
