@@ -9,6 +9,10 @@
 		dispatch('close');
 	}
 
+	function setIsLoading(state: boolean) {
+		dispatch('setIsLoading', { state });
+	}
+
 	async function submitFormHandler(
 		event: SubmitEvent & {
 			currentTarget: EventTarget & HTMLFormElement;
@@ -20,7 +24,9 @@
 
 		closeModal();
 
+		setIsLoading(true);
 		const res = await apiMoveShortUrlsToNewUserId({ oldUserId, newUserId });
+		setIsLoading(false);
 		if (!res?.ok) {
 			alert(res?.payload);
 			return;

@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 
 	let isMounted = false;
-	let isLoadingShortUrlsData = true;
+	let isLoading = true;
 	let isCustomShortUrl = false;
 	let isAuthModalOpen = false;
 	let shortUrls: IShortUrl[] = [];
@@ -23,10 +23,14 @@
 		getShortUrls();
 	});
 
+	function setIsLoading(event: CustomEvent<{ state: boolean }>) {
+		isLoading = event.detail.state;
+	}
+
 	async function getShortUrls() {
-		isLoadingShortUrlsData = true;
+		isLoading = true;
 		const res = await apiGetShortUrls($userStore.userId);
-		isLoadingShortUrlsData = false;
+		isLoading = false;
 		if (!res?.ok) {
 			alert(res?.payload);
 			return;
@@ -59,7 +63,9 @@
 		const longUrl = event.currentTarget.longUrl.value;
 		const shortUrl = event.currentTarget.shortUrl?.value;
 
+		isLoading = true;
 		const res = await apiCreateShortUrl({ userId, longUrl, shortUrl });
+		isLoading = false;
 		if (!res?.ok) {
 			alert(res?.payload);
 			return;
@@ -76,7 +82,9 @@
 	}
 
 	async function forgetShortUrlHandler(shortUrl: string) {
+		isLoading = true;
 		const res = await apiModifyShortUrl(shortUrl, { userId: $userStore.userId, isShow: false });
+		isLoading = false;
 		if (!res?.ok) {
 			alert(res?.payload);
 			return;
@@ -85,7 +93,9 @@
 	}
 
 	async function deleteShortUrlHandler(shortUrl: string) {
+		isLoading = true;
 		const res = await apiDeleteShortUrl(shortUrl, { userId: $userStore.userId });
+		isLoading = false;
 		if (!res?.ok) {
 			alert(res?.payload);
 			return;
@@ -102,7 +112,7 @@
 			<header class="py-2 px-3 border-b">
 				<div class="mx-auto sm:w-11/12">
 					<div class="ml-auto w-fit space-x-4">
-						{#if isLoadingShortUrlsData}
+						{#if isLoading}
 							<span class="animate-spin material-symbols-outlined">autorenew</span>
 						{/if}
 						<button
@@ -172,7 +182,7 @@
 				{#if shortUrls.length > 0}
 					<div class="mt-20 w-full">
 						<div class="mb-6">
-							<h3 class="font-bold text-2xl text-center">Short URL List</h3>
+							<h3 class="font-bold text-xl sm:text-2xl text-center">Short URL List</h3>
 							<span class="mt-1 block text-sm text-center"
 								>Automatically deleted after 3 months since last use</span
 							>
@@ -243,7 +253,11 @@
 			</footer>
 		</div>
 		{#if isAuthModalOpen}
-			<AuthModal on:close={closeAuthModal} on:getShortUrls={getShortUrls} />
+			<AuthModal
+				on:close={closeAuthModal}
+				on:getShortUrls={getShortUrls}
+				on:setIsLoading={setIsLoading}
+			/>
 		{/if}
 	</div>
 {/if}
