@@ -1,0 +1,21 @@
+import conf from './conf';
+
+export default async function apiMoveShortUrlsToNewUserId(data: {
+	oldUserId: string;
+	newUserId: string;
+}) {
+	try {
+		const res = await fetch(conf.APP_API_ADDR + '/m/move', {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		});
+		return {
+			ok: res.ok,
+			code: res.status,
+			payload: ((await res.json()) as { payload?: string }).payload
+		};
+	} catch (err) {
+		console.error('ERROR', err);
+	}
+}
