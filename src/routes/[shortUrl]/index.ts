@@ -5,7 +5,7 @@ export async function get({ params }: { params: { shortUrl: string } }) {
 
 	const res = await apiGetLongUrl(params.shortUrl);
 
-	if (res?.code.toString()[0] === '2') {
+	if (res?.ok) {
 		return {
 			status: 302,
 			headers: {
