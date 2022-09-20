@@ -164,7 +164,7 @@
 												name="shortUrl"
 												placeholder="enter short URL"
 												required
-												pattern={'^[a-zA-Z0-9]{3,}$'}
+												pattern={'^[a-zA-Z0-9\-_]{3,}$'}
 												title="A valid URL path with at least 3 letters"
 												autocomplete="off"
 												class="w-full bg-transparent outline-none"
